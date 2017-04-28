@@ -1,5 +1,4 @@
 // This file is part of www.nand2tetris.org
-// and the book "The Elements of Computing Systems"
 // by Nisan and Schocken, MIT Press.
 // File name: projects/01/Mux4Way16.hdl
 
@@ -17,4 +16,7 @@ CHIP Mux4Way16 {
 
     PARTS:
     // Put your code here:
+    Mux16(a=a, b=b, sel=sel[0], out=out1);
+    Mux16(a=c, b=d, sel=sel[0], out=out2);
+    Mux16(a=out1, b=out2, sel=sel[1], out=out);
 }
