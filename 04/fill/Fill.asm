@@ -12,6 +12,28 @@
 // the screen should remain fully clear as long as no key is pressed.
 
 // Put your code here.
+	@color
+	M=1
+
+(INFITE_LOOP)
+	@KBD	
+	D=M
+	@color
+	M=1
+
+	@MINUS_ONE
+	D;JGT
+
+ 	@FILL
+	0;JMP
+ 	
+
+ 	@INFITE_LOOP
+ 	0;JMP
+(MINUS_ONE)
+	@color
+	M=-1
+(FILL)
  	@SCREEN
  	D=A
  	@screen
@@ -24,7 +46,7 @@
  	D=M
  	@256
  	D=D-A
- 	@END
+ 	@INFITE_LOOP
  	D;JGT
 
 	@i
@@ -39,6 +61,23 @@
  	@LOOP2
  	D;JGT
 
+	@color			
+	D=M
+
+	@KBD
+	D=M
+	@FILL_SCREEN
+	D;JGT
+
+	@BLANK_SCREEN
+	D;JEQ
+
+(INCREMENT)
+	@i
+	M=M+1
+	@LOOP
+	0;JMP
+(FILL_SCREEN)
 	@screen
 	D=M
 	@tmp
@@ -46,11 +85,18 @@
 	M=-1
 	@screen
 	M=M+1
-
-	@i
-	M=M+1
-	@LOOP
+	@INCREMENT
 	0;JMP
- (END)
+(BLANK_SCREEN)
+	@screen
+	D=M
+	@tmp
+	A=D
+	M=0
+	@screen
+	M=M+1
+	@INCREMENT
+	0;JMP
+(END)
  	@END
  	0;JMP
