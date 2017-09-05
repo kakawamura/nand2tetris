@@ -28,4 +28,15 @@ CHIP Memory {
 
     PARTS:
     // Put your code here:
+    // address[15] == 0
+    // DMUX4wayでaddress[14] address[15]で振り分ける
+
+    DMux4Way(sel=address[13..14], a=a, b=b, c=c, d=d, in=true);
+    Or(a=a, b=b, out=aORb);
+    And(a=aORb, b=load, out=loadRAM);
+    And(a=c, b=load, out=loadScreen);
+    RAM16K(in=in, load=loadRAM, address=address[0..13] ,out=outRAM);
+    Screen(in=in, load=loadScreen, address=address[0..12] ,out=outScreen);
+    Keyboard(out=outKeyboard);
+    Mux4Way16(a=outRAM, b=outRAM, c=outScreen, d=outKeyboard, out=out, sel=address[13..14]);
 }
