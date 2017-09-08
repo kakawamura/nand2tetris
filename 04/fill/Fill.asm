@@ -6,97 +6,111 @@
 // Runs an infinite loop that listens to the keyboard input.
 // When a key is pressed (any key), the program blackens the screen,
 // i.e. writes "black" in every pixel;
-// the screen should remain fully black as long as the key is pressed. 
+// the screen should remain fully black as long as the key is pressed.
 // When no key is pressed, the program clears the screen, i.e. writes
 // "white" in every pixel;
 // the screen should remain fully clear as long as no key is pressed.
 
 // Put your code here.
-	@color
-	M=1
 
-(INFITE_LOOP)
-	@KBD	
-	D=M
-	@color
-	M=1
+// KBD listen loop (main)
+(LOOP)
+  @KBD
+  D=M
+  @PRESSED
+  D;JGT
 
-	@MINUS_ONE
-	D;JGT
+  @CLEAR
+  0;JMP
 
- 	@FILL
-	0;JMP
- 	
+(PRESSED)
+  @DRAW
+  0;JMP
 
- 	@INFITE_LOOP
- 	0;JMP
-(MINUS_ONE)
-	@color
-	M=-1
-(FILL)
+(DRAW)
+// Screen declaration
  	@SCREEN
  	D=A
  	@screen
  	M=D
 
+// outer screen draw loop
 	@j
 	M=1
-(LOOP2)
- 	@j	
+(OUTERLOOP_D)
+ 	@j
  	D=M
  	@256
  	D=D-A
- 	@INFITE_LOOP
+ 	@LOOP
  	D;JGT
+  @j
+	M=M+1
 
+// inner screen draw loop
 	@i
 	M=1
-	@j
-	M=M+1
- (LOOP)
- 	@i	
+(INNERLOOP_D)
+ 	@i
  	D=M
  	@32
  	D=D-A
- 	@LOOP2
+ 	@OUTERLOOP_D
  	D;JGT
+  @i
+	M=M+1
 
-	@color			
+	@screen
 	D=M
+	@tmp
+	A=D
+  M=-1
+	@screen
+	M=M+1
 
-	@KBD
-	D=M
-	@FILL_SCREEN
-	D;JGT
+	@INNERLOOP_D
+	0;JMP
 
-	@BLANK_SCREEN
-	D;JEQ
+(CLEAR)
+// Screen declaration
+ 	@SCREEN
+ 	D=A
+ 	@screen
+ 	M=D
 
-(INCREMENT)
+// outer screen draw loop
+	@j
+	M=1
+(OUTERLOOP_C)
+ 	@j
+ 	D=M
+ 	@256
+ 	D=D-A
+ 	@LOOP
+ 	D;JGT
+  @j
+	M=M+1
+
+// inner screen draw loop
 	@i
+	M=1
+(INNERLOOP_C)
+ 	@i
+ 	D=M
+ 	@32
+ 	D=D-A
+ 	@OUTERLOOP_C
+ 	D;JGT
+  @i
 	M=M+1
-	@LOOP
-	0;JMP
-(FILL_SCREEN)
+
 	@screen
 	D=M
 	@tmp
 	A=D
-	M=-1
+  M=0
 	@screen
 	M=M+1
-	@INCREMENT
+
+	@INNERLOOP_C
 	0;JMP
-(BLANK_SCREEN)
-	@screen
-	D=M
-	@tmp
-	A=D
-	M=0
-	@screen
-	M=M+1
-	@INCREMENT
-	0;JMP
-(END)
- 	@END
- 	0;JMP
